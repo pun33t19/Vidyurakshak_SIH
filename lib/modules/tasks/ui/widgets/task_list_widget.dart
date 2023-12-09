@@ -24,6 +24,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
             return GestureDetector(
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
+                      settings: RouteSettings(name: 'task_details_screen'),
                       builder: (context) => const TaskDetailsScreen()));
                 },
                 child: const SingleTaskWidget());

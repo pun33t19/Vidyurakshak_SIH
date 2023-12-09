@@ -4,10 +4,17 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:insta_assets_picker/insta_assets_picker.dart';
+import 'package:lottie/lottie.dart' as ltt;
+import 'package:provider/provider.dart';
 import 'package:timelines/timelines.dart';
+import 'package:vidurakshak_sih/modules/documentation/ui/upload_screen.dart';
 import 'package:vidurakshak_sih/modules/map/models/marker_model.dart';
 import 'package:vidurakshak_sih/modules/tasks/enums/tasks_priority_enum.dart';
+import 'package:vidurakshak_sih/modules/tasks/models/document_model.dart';
+import 'package:vidurakshak_sih/modules/tasks/providers/document_provider.dart';
 import 'package:vidurakshak_sih/modules/tasks/ui/widgets/alert_red_icon.dart';
+import 'package:vidurakshak_sih/modules/tasks/ui/widgets/single_document_widget.dart';
 import 'package:vidurakshak_sih/modules/tasks/ui/widgets/status_timeline.dart';
 import 'package:vidurakshak_sih/utils/screen_util/gap.dart';
 import 'package:vidurakshak_sih/utils/screen_util/screen_sizes.dart';
@@ -113,7 +120,77 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                 ],
               ),
             ),
-            Align(alignment: Alignment.center, child: ProcessTimelinePage())
+            Align(alignment: Alignment.center, child: ProcessTimelinePage()),
+            SizedBox(
+              height: Gap.mh,
+            ),
+            Align(
+              alignment: Alignment.topLeft,
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: ScreenSizes.screenWidth! * 0.07),
+                child: Text(
+                  'Documentation',
+                  style: TextStyles.ts600l,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: Gap.sh,
+            ),
+            Consumer<DocumentProvider>(
+              builder: (context, document, child) {
+                if (document.items.isNotEmpty) {
+                  return SizedBox(
+                    child: ListView.separated(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return SingleDocumentWidget(
+                              documentModel: document.items[index]);
+                        },
+                        separatorBuilder: (context, index) => SizedBox(
+                              height: Gap.sh,
+                            ),
+                        itemCount: document.items.length),
+                  );
+                }
+                return Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: ScreenSizes.screenWidth! * 0.07),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          InstaAssetPicker.pickAssets(context,
+                              title: 'Select Images', maxAssets: 5, onCompleted:
+                                  (Stream<InstaAssetsExportDetails> stream) {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                    UploadScreen(photoStream: stream)));
+                          });
+                        },
+                        child: ClipRect(
+                          child: ltt.Lottie.asset('assets/upload_doc.json',
+                              height: ScreenSizes.screenHeight! * 0.2,
+                              width: ScreenSizes.screenWidth!),
+                        ),
+                      ),
+                      Center(
+                        child: Text(
+                          'Add Images and document your work!',
+                          style: TextStyles.ts300s,
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              },
+            ),
+            SizedBox(
+              height: 50,
+            )
           ],
         ),
       ),

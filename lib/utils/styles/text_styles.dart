@@ -23,6 +23,14 @@ class TextStyles {
       fontSize: 16,
       fontWeight: FontWeight.w400,
       color: AppColors.primaryTextColor);
+  static TextStyle ts400xs = GoogleFonts.lato(
+      fontSize: 12,
+      fontWeight: FontWeight.w400,
+      color: AppColors.primaryTextColor);
+  static TextStyle ts400gs = GoogleFonts.lato(
+      fontSize: 18,
+      fontWeight: FontWeight.w400,
+      color: AppColors.primaryTextColor);
 
   static TextStyle ts600l = GoogleFonts.lato(
       fontSize: 22,

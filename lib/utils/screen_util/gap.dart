@@ -6,4 +6,5 @@ class Gap {
   static final sh = ScreenSizes.screenHeight! * 0.02;
   static final xsh = ScreenSizes.screenHeight! * 0.01;
   static final sw = ScreenSizes.screenWidth! * 0.02;
+  static final xsw = ScreenSizes.screenWidth! * 0.01;
 }
