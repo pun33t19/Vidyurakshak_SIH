@@ -1,0 +1,1 @@
+enum TaskCompletion { active, completed }

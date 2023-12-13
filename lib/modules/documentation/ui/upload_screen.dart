@@ -11,6 +11,7 @@ import 'package:insta_assets_picker/insta_assets_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:vidurakshak_sih/modules/tasks/models/document_model.dart';
 import 'package:vidurakshak_sih/modules/tasks/providers/document_provider.dart';
+import 'package:vidurakshak_sih/modules/tasks/providers/task_list_provider.dart';
 import 'package:vidurakshak_sih/modules/tasks/ui/task_details_screen.dart';
 import 'package:vidurakshak_sih/utils/screen_util/gap.dart';
 import 'package:vidurakshak_sih/utils/screen_util/screen_sizes.dart';
@@ -165,14 +166,22 @@ class _UploadScreenState extends State<UploadScreen> {
                       child: ElevatedButton(
                         onPressed: () {
                           Provider.of<DocumentProvider>(context, listen: false)
-                              .addDocumentItem(DocumentModel(
-                                  images: imageList,
-                                  description: _textEditingController.text,
-                                  location: currentLocation,
-                                  timestamp: DateTime.now()));
+                              .addDocumentItem(
+                            DocumentModel(
+                              images: imageList,
+                              description: _textEditingController.text,
+                              location: currentLocation,
+                              timestamp: DateTime.now(),
+                            ),
+                          );
                           Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
-                                  builder: (context) => TaskDetailsScreen()),
+                                builder: (context) => TaskDetailsScreen(
+                                  taskModel:
+                                      Provider.of<TaskListProvider>(context)
+                                          .tasksModel,
+                                ),
+                              ),
                               (route) =>
                                   route.settings.name == 'task_details_screen');
                         },

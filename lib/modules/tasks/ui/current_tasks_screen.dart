@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:vidurakshak_sih/modules/tasks/enums/task_completion_enum.dart';
+import 'package:vidurakshak_sih/modules/tasks/providers/task_list_provider.dart';
+import 'package:vidurakshak_sih/modules/tasks/repository/tasks_repository.dart';
 import 'package:vidurakshak_sih/modules/tasks/ui/widgets/task_list_widget.dart';
 import 'package:vidurakshak_sih/utils/screen_util/gap.dart';
 import 'package:vidurakshak_sih/utils/screen_util/screen_sizes.dart';
@@ -15,12 +19,15 @@ class CurrentTasksScreen extends StatefulWidget {
 }
 
 class _CurrentTasksScreenState extends State<CurrentTasksScreen> {
-  List<String> tabs = ['Yours', 'Active', 'Assigned'];
+  List<String> tabs = ['Active', 'Completed'];
   int selectedIndex = 0;
   List<Widget> currentScreen = [
-    TaskListScreen(),
-    TaskListScreen(),
-    TaskListScreen()
+    TaskListScreen(
+      taskCompletion: TaskCompletion.active,
+    ),
+    TaskListScreen(
+      taskCompletion: TaskCompletion.completed,
+    ),
   ];
 
   @override
@@ -31,9 +38,14 @@ class _CurrentTasksScreenState extends State<CurrentTasksScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            'Tasks',
-            style: TextStyles.largeHeaderText,
+          GestureDetector(
+            onTap: () {
+              TasksRepository().addData();
+            },
+            child: Text(
+              'Tasks',
+              style: TextStyles.largeHeaderText,
+            ),
           ),
           SizedBox(
             height: Gap.sh,

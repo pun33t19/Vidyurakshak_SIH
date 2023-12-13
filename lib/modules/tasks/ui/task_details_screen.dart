@@ -12,6 +12,7 @@ import 'package:vidurakshak_sih/modules/documentation/ui/upload_screen.dart';
 import 'package:vidurakshak_sih/modules/map/models/marker_model.dart';
 import 'package:vidurakshak_sih/modules/tasks/enums/tasks_priority_enum.dart';
 import 'package:vidurakshak_sih/modules/tasks/models/document_model.dart';
+import 'package:vidurakshak_sih/modules/tasks/models/task_model.dart';
 import 'package:vidurakshak_sih/modules/tasks/providers/document_provider.dart';
 import 'package:vidurakshak_sih/modules/tasks/ui/widgets/alert_red_icon.dart';
 import 'package:vidurakshak_sih/modules/tasks/ui/widgets/single_document_widget.dart';
@@ -22,7 +23,9 @@ import 'package:vidurakshak_sih/utils/styles/text_styles.dart';
 import 'package:vidurakshak_sih/utils/theme/app_colors.dart';
 
 class TaskDetailsScreen extends StatefulWidget {
-  const TaskDetailsScreen({super.key});
+  final TaskModel taskModel;
+
+  const TaskDetailsScreen({super.key, required this.taskModel});
 
   @override
   State<TaskDetailsScreen> createState() => _TaskDetailsScreenState();
@@ -43,7 +46,21 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
   void initState() {
     super.initState();
     _marker.add(MarkerModel.markerList[0]);
-    addressFuture = adressFromLatLong(MarkerModel.markerList[0].position);
+    addressFuture = adressFromLatLong(LatLng(
+        widget.taskModel.latlng.latitude, widget.taskModel.latlng.longitude));
+  }
+
+  String getPriority(TasksPriority tasksPriority) {
+    switch (tasksPriority) {
+      case TasksPriority.low:
+        return 'Low';
+      case TasksPriority.medium:
+        return 'Medium';
+      case TasksPriority.high:
+        return 'High';
+      default:
+        return 'Low';
+    }
   }
 
   @override
@@ -61,7 +78,15 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
               SizedBox(
                 width: Gap.sw,
               ),
-              Text(snapshot.data ?? "Location")
+              SizedBox(
+                width: ScreenSizes.screenWidth! - 120,
+                child: Text(
+                  snapshot.data ?? "Location",
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyles.ts400s,
+                  maxLines: 1,
+                ),
+              )
             ]);
           },
         ),
@@ -76,7 +101,8 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                 mapType: MapType.hybrid,
                 markers: _marker,
                 initialCameraPosition: CameraPosition(
-                  target: MarkerModel.markerList[0].position,
+                  target: LatLng(widget.taskModel.latlng.latitude,
+                      widget.taskModel.latlng.longitude),
                   zoom: 14,
                 ),
               ),
@@ -91,19 +117,21 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Sangli district regular check',
+                    widget.taskModel.title,
                     style: TextStyles.ts600l,
                   ),
                   SizedBox(
                     height: Gap.sh,
                   ),
-                  const DetailRowWidget(
-                      fieldName: 'Priority: ', fieldProperty: 'Medium'),
+                  DetailRowWidget(
+                      fieldName: 'Priority: ',
+                      fieldProperty: getPriority(widget.taskModel.priority),
+                      tasksPriority: widget.taskModel.priority),
                   SizedBox(
                     height: Gap.sh,
                   ),
                   Text(
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                    widget.taskModel.description,
                     style: TextStyles.ts300s,
                     maxLines: 6,
                   ),
@@ -201,9 +229,13 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
 class DetailRowWidget extends StatelessWidget {
   final String fieldName;
   final String fieldProperty;
+  final TasksPriority tasksPriority;
 
   const DetailRowWidget(
-      {super.key, required this.fieldName, required this.fieldProperty});
+      {super.key,
+      required this.fieldName,
+      required this.fieldProperty,
+      required this.tasksPriority});
 
   @override
   Widget build(BuildContext context) {
@@ -217,7 +249,7 @@ class DetailRowWidget extends StatelessWidget {
           width: Gap.sw,
         ),
         GlowingAlertIcon(
-          tasksPriority: TasksPriority.medium,
+          tasksPriority: tasksPriority,
         ),
         SizedBox(
           width: Gap.sw,

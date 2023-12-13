@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "184702438747",
+    "project_id": "vidyurakshak-sih",
+    "storage_bucket": "vidyurakshak-sih.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:184702438747:android:25d5bf11ccfe7b8de19e7e",
+        "android_client_info": {
+          "package_name": "com.example.vidurakshak_sih"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC25laAHCfHnz9kQsdYLbkXMtNWfNh1jvY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
