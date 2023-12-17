@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:vidurakshak_sih/modules/map/models/marker_model.dart';
+import 'package:vidurakshak_sih/modules/tasks/repository/tasks_repository.dart';
 
 class MapViewScreen extends StatefulWidget {
   const MapViewScreen({super.key});
@@ -29,9 +30,22 @@ class _MapViewScreenState extends State<MapViewScreen> {
     });
   }
 
-  void addMarkers() {
-    _markers.addAll(MarkerModel.markerList);
+  Future<void> addMarkers() async {
+    final List<Marker> markerList = await TasksRepository().fetchMarkerData();
+  _markers.addAll(markerList);
+    // Now you have the list of Marker objects in your database
+    print('Marker List: $markerList');
   }
+
+  // void addMarkers() {
+  //   // _markers.addAll(MarkerModel.markerList);
+
+  //   List<Marker> markerList = [];
+
+
+  //   _markers.addAll(markerList);
+
+  // }
 
   @override
   Widget build(BuildContext context) {
