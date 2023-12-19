@@ -38,16 +38,16 @@ class _TaskListScreenState extends State<TaskListScreen> {
               itemBuilder: (context, index) {
                 return GestureDetector(
                     onTap: () {
-                      Provider.of<TaskListProvider>(context, listen: false)
-                          .updateTasksModel(tasksList[index]);
+                      // Provider.of<TaskListProvider>(context, listen: false)
+                      //     .updateTasksModel(tasksList[index]);
 
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          settings: RouteSettings(name: 'task_details_screen'),
-                          builder: (context) =>
-                              TaskDetailsScreen(taskModel: tasksList[index]),
-                        ),
-                      );
+                      // Navigator.of(context).push(
+                      //   MaterialPageRoute(
+                      //     settings: RouteSettings(name: 'task_details_screen'),
+                      //     builder: (context) =>
+                      //         TaskDetailsScreen(taskModel: tasksList[index]),
+                      //   ),
+                      // );
                     },
                     child: SingleTaskWidget(
                       taskModel: tasksList[index],

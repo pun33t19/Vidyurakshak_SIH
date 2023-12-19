@@ -45,7 +45,17 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    _marker.add(MarkerModel.markerList[0]);
+    _marker.add(
+      Marker(
+          markerId: const MarkerId('marker1'),
+          position: LatLng(widget.taskModel.latlng.latitude,
+              widget.taskModel.latlng.longitude),
+          infoWindow: InfoWindow(
+              title: widget.taskModel.title,
+              snippet: '${getPriority(widget.taskModel.priority)} priority'),
+          icon: BitmapDescriptor.defaultMarkerWithHue(
+              BitmapDescriptor.hueYellow)),
+    );
     addressFuture = adressFromLatLong(LatLng(
         widget.taskModel.latlng.latitude, widget.taskModel.latlng.longitude));
   }

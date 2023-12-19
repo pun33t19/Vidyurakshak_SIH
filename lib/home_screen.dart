@@ -1,4 +1,5 @@
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:vidurakshak_sih/modules/leaderboard/ui/leaderboard_screen.dart';
 import 'package:vidurakshak_sih/modules/map/ui/map_view_screen.dart';
@@ -14,6 +15,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  @override
+  void initState() {
+    super.initState();
+  }
+
   int bottomSelectedIndex = 0;
   final _pageController = PageController(initialPage: 0);
   final _controller = NotchBottomBarController(index: 0);

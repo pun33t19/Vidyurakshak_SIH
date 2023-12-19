@@ -1,8 +1,9 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:vidurakshak_sih/modules/map/models/marker_model.dart';
+import 'package:vidurakshak_sih/modules/tasks/providers/task_list_provider.dart';
 
 class MapViewScreen extends StatefulWidget {
   const MapViewScreen({super.key});
@@ -30,7 +31,21 @@ class _MapViewScreenState extends State<MapViewScreen> {
   }
 
   void addMarkers() {
-    _markers.addAll(MarkerModel.markerList);
+    final markerList =
+        Provider.of<TaskListProvider>(context, listen: false).activeTasksList;
+    for (var i = 0; i < markerList.length; i++) {
+      _markers.add(
+        Marker(
+            markerId: MarkerId('marker${i}'),
+            position: LatLng(
+                markerList[i].latlng.latitude, markerList[i].latlng.longitude),
+            infoWindow: InfoWindow(
+                title: 'Corridor $i',
+                snippet: '${markerList[i].priority} priority'),
+            icon: BitmapDescriptor.defaultMarkerWithHue(
+                BitmapDescriptor.hueYellow)),
+      );
+    }
   }
 
   @override
